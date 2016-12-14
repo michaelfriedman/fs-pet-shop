@@ -58,6 +58,10 @@ const server = http.createServer((req, res) => {
       res.setHeader('Content-Type', 'application/json');
       res.end(petJSON);
     });
+  } else {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Not found')
   }
 });
 
