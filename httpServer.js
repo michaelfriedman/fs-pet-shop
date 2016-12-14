@@ -7,6 +7,7 @@ const http = require('http');
 const path = require('path');
 
 const petsPath = path.join(__dirname, 'pets.json');
+const petRegExp = /^\/pets\/(.*)$/;
 
 const server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/pets') {
@@ -58,10 +59,28 @@ const server = http.createServer((req, res) => {
       res.setHeader('Content-Type', 'application/json');
       res.end(petJSON);
     });
+  } else if (req.method === 'POST' && req.url === '/pets') {
+    fs.readFile(petsPath, 'utf8', (err, petsJSON) => {
+      if (err) {
+        console.error(err.stack);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Internal Service Error');
+
+        return;
+      }
+      const pets = JSON.parse(petsJSON);
+      const pet = req.body;
+
+      pets.push(pet);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(req.body);
+    });
   } else {
     res.statusCode = 404;
     res.setHeader('Content-Type', 'text/plain');
-    res.end('Not Found')
+    res.end('Not Found');
   }
 });
 
