@@ -32,15 +32,19 @@ app.get('/pets', (req, res) => {
   });
 });
 
-app.post('pets', (req, res) => {
+app.post('/pets', (req, res) => {
   fs.readFile(petsPath, 'utf8', (readErr, petsJSON) => {
     if (readErr) {
       console.error(readErr.stack);
 
       return res.sendStatus(500);
     }
+
     const pets = JSON.parse(petsJSON);
-    const pet = req.body.name;
+    const name = req.body.name;
+    const age = req.body.age;
+    const kind = req.body.kind;
+    const pet = { name, age, kind };
 
     if (!pet) {
       return res.sendStatus(400);
@@ -86,3 +90,5 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+module.exports = app;
