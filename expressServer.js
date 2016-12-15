@@ -42,11 +42,11 @@ app.post('/pets', (req, res) => {
 
     const pets = JSON.parse(petsJSON);
     const name = req.body.name;
-    const age = req.body.age;
+    const age = parseInt(req.body.age);
     const kind = req.body.kind;
     const pet = { name, age, kind };
 
-    if (!pet) {
+    if (name === '' || age === '' || kind === '') {
       return res.sendStatus(400);
     }
     pets.push(pet);
@@ -57,7 +57,7 @@ app.post('/pets', (req, res) => {
         console.error(writeErr.stack);
         return res.sendStatus(500);
       }
-      res.set('Content-Type', 'text/plain');
+      res.set('Content-Type', 'application/json');
       res.send(pet);
     });
   });
@@ -76,7 +76,7 @@ app.get('/pets/:id', (req, res) => {
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
       return res.sendStatus(404);
     }
-    res.set('Content-Type', 'text/plain');
+    res.set('Content-Type', 'application/json');
     res.send(pets[id]);
   });
 });
