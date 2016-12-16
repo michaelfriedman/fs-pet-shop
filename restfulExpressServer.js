@@ -110,9 +110,6 @@ app.patch('/pets/:id', (req, res) => {
     const kind = req.body.kind;
     const pet = { name: name, age: age, kind: kind };
 
-    if (Number.isNaN(age) || !kind || !name) {
-      return res.sendStatus(400);
-    }
     pets[id] = pet;
 
     const newPetsJSON = JSON.stringify(pets);
