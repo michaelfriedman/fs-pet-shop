@@ -105,11 +105,25 @@ app.patch('/pets/:id', (req, res) => {
       return res.sendStatus(404);
     }
 
-    const name = req.body.name;
-    const age = parseInt(req.body.age);
-    const kind = req.body.kind;
-    const pet = { name: name, age: age, kind: kind };
+    // const name = req.body.name;
+    const age = Number.parseInt(req.body.age);
+      const { kind, name } = req.body;
 
+
+
+
+    if (!Number.isNaN) {
+      pets[id] = age;
+    }
+
+    if (kind) {
+      pets[id] = kind;
+    }
+
+    if (name) {
+      pets[id] = name;
+    }
+const pet = { name, age, kind};
     pets[id] = pet;
 
     const newPetsJSON = JSON.stringify(pets);
